@@ -4,12 +4,12 @@ if(isset($_POST['submit'])) {
     require_once "includes/database.php";
     require_once "secure.php";
 
-    // Get form data
+    // Haal formuliergegevens op
     $naam = mysqli_real_escape_string($db, $_POST['naam']);
     $email = mysqli_escape_string($db, $_POST['email']);
     $wachtwoord = $_POST['wachtwoord'];
 
-    // Server-side validation
+    // Als gegevens geldig zijn
     $errors = [];
     if($naam == '') {
         $errors['naam'] = 'Please fill in your naam.';
@@ -21,12 +21,12 @@ if(isset($_POST['submit'])) {
         $errors['wachtwoord'] = 'Please fill in your wachtwoord.';
     }
 
-    // If data valid
+    // Validatie aan de serverkant
     if(empty($errors)) {
-        // create a secure password, with the PHP function password_hash()
+        // Maak een veilig wachtwoord aan met de PHP-functie password_hash()
         $wachtwoord = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
-        // store the new user in the database.
+        // Sla de nieuwe gebruiker op in de database
         $query = "INSERT INTO users (naam, email, wachtwoord) VALUES ('$naam', '$email', '$wachtwoord')";
 
         $result = mysqli_query($db, $query);
